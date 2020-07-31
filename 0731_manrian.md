@@ -60,6 +60,7 @@
 - UI는 기존 천리안의 감성을 따라서 파란 배경에 하얀 글자로 정한다.
 - 마우스 사용 없는 (마우스 커서가 작동하지 않는) 키보드 기반의 명령어로 동작하는 웹사이트
 - ip address에 인격(personality)을 부여하는 미래형 서비스
+- https://ovenapp.io/view/6u9zQu7r8y8aYmVD6k5NmgfChilSvmOE/LH7LZ
 
 ### Req. 0. 공통 사항
 
