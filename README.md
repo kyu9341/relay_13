@@ -1,8 +1,8 @@
 # relay_13
 
-## [(OT)라떼 챌린지 선정]('./0727_latteishorse.md)
+## [(OT)라떼 챌린지 선정]('./0727_latteishorse.md')
 
-## [Week 1. 기획서 작성]('./0731_manrrian.md)
+## [Week 1. 기획서 작성]('./0731_manrian.md')
 - contributors
   - J176 장준영
   - J177 장준호
