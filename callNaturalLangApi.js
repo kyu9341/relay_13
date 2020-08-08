@@ -1,5 +1,4 @@
 const request = require('request')
-let https = require('https');
 
 const options = {
   url: `${process.env.ENDPOINT}/text/analytics/v3.0/sentiment`,
@@ -35,7 +34,6 @@ function callNaturalLangApi(contents) {
           content.sentiment = document.sentiment
           return [...acc, content]
         }, [])
-        console.log(data)
         resolve(data)
         return
       }

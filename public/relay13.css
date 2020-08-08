@@ -154,15 +154,15 @@ strong {
     padding: 10px;
 }
 
-.good {
+.neutral {
     color: #431c5d;
 }
 
-.soso {
+.positive {
     color: #cdd422;
 }
 
-.bad {
+.negative {
     color: #e05915;
 }
 
