@@ -15,9 +15,9 @@ const options = {
 }
 
 function callTranslationApi(content) {
-  const _options = JSON.parse(JSON.stringify(options))
-  _options.form.text = content.text
   return new Promise((resolve, reject) => {
+    const _options = JSON.parse(JSON.stringify(options))
+    _options.form.text = content.text
     request(_options, (error, response, body) => {
       const data = JSON.parse(body)
       if (!!error || data.message['@type'] !== 'response') {

@@ -24,9 +24,25 @@ app.get('/posts', (req, res) => {
     .then(contents => new Promise((resolve, reject) => {
       Promise.all(contents.map(callTranslationApi)).then(resolve)
     }))
-    .then(data => res.json(data))
+    .then(callNaturalLangApi)
+    .then(data => {
+      const posts = data
+        .sort((a, b) => +a.postId - +b.postId || +a.contentId - +b.contentId)
+        .reduce((acc, cur) => {
+          const post = acc.find(post => post.postId === cur.postId)
+          if (!post) {
+            return [...acc, {
+              postId: "1",
+              contents: [cur]
+            }]
+          }
+          post.contents.push(cur)
+          return acc
+        }, [])
+      res.json(posts)
+    })
     .catch(error => {
-      console.log(error.message)
+      console.log(error)
       res.json({
         status: 'fail'
       })
