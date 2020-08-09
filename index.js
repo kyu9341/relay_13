@@ -1,3 +1,4 @@
+var fs = require('fs'); // 파일 시스템
 const dotenv = require('dotenv')
 // .env 파일로 설정한 환경변수를 적용합니다(sample.env 파일 내용 확인 바람).
 dotenv.config()
@@ -8,6 +9,8 @@ const path = require('path')
 const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
+const process_sentimentAnalysis = require('./process_sentimentAnalysis')
+const {convertFormatForAnalisys, convertFormatForUI} = require('./convertFormat')
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
@@ -15,36 +18,26 @@ app.set('port', process.env.PORT || 3000)
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('/posts', (req, res) => {
-  getData()
-    .then(posts => posts
-      .map(post => post.contents.map(content => ({
-        postId: post.postId,
-        ...content
-      })))
-      .reduce((acc, cur) => [...acc, ...cur], []))
+  getData() // json 파일 가져옴
+    .then(convertFormatForAnalisys)
     .then(contents => new Promise((resolve, reject) => {
       Promise.all(contents.map(callTranslationApi)).then(resolve)
     }))
+    /**
+     * api 호출 함수가 두 종류(callNaturalLangApi, process_sentimentAnalysis)가 있는데
+     * 하나를 선택하여 사용하시면 됩니다.
+     */
     .then(callNaturalLangApi)
-    .then(data => {
-      const posts = data
-        .sort((a, b) => +a.postId - +b.postId || +a.contentId - +b.contentId)
-        .reduce((acc, cur) => {
-          const post = acc.find(post => post.postId === cur.postId)
-          if (!post) {
-            return [...acc, {
-              postId: cur.postId,
-              contents: [cur]
-            }]
-          }
-          post.contents.push(cur)
-          return acc
-        }, [])
-      res.json(posts)
-    })
+    // .then(process_sentimentAnalysis) //출력 // data => res.json(data)
+   .then(convertFormatForUI)
+    .then(posts => res.json(posts))
     .catch(error => {
       console.log(error)
-      res.json(require('./public/data.json'))
+      let substitute = require('./public/sentiment.json')
+      if (!substitute) {
+        substitute = require('./public/data.json')
+      }
+      res.json(substitute)
     })
 })
 

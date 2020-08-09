@@ -16,13 +16,13 @@ const DELIMITER = '-'
 
 function callNaturalLangApi(contents) {
   return new Promise((resolve, reject) => {
-    const body = contents.map(content => ({
+    const documents = contents.map(content => ({
       id: `${content.postId}${DELIMITER}${content.contentId}`,
-      language: 'en',
-      text: content.translatedText
+      language: !!content.translatedText ? 'en' : 'ko',
+      text: content.translatedText || content.text
     }))
     const _options = JSON.parse(JSON.stringify(options))
-    _options.body.documents = body
+    _options.body.documents = documents
     request(_options, (error, response, body) => {
       if (!!error) {
         resolve(contents)

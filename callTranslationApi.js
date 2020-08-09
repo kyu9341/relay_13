@@ -20,7 +20,7 @@ function callTranslationApi(content) {
     _options.form.text = content.text
     request(_options, (error, response, body) => {
       const data = JSON.parse(body)
-      if (!!error || data.message['@type'] !== 'response') {
+      if (!!error || !!data['errorMessage']) {
         resolve(content)
       }
       if (response.statusCode === 200) {
