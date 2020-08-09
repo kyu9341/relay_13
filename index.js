@@ -1,4 +1,3 @@
-var fs = require('fs'); // 파일 시스템
 const dotenv = require('dotenv')
 // .env 파일로 설정한 환경변수를 적용합니다(sample.env 파일 내용 확인 바람).
 dotenv.config()
@@ -29,7 +28,7 @@ app.get('/posts', (req, res) => {
      */
     .then(callNaturalLangApi)
     // .then(process_sentimentAnalysis) //출력 // data => res.json(data)
-   .then(convertFormatForUI)
+    .then(convertFormatForUI)
     .then(posts => res.json(posts))
     .catch(error => {
       console.log(error)

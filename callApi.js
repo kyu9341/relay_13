@@ -6,7 +6,7 @@ const request = require('request')
 const options = {
   uri: 'api url here...',
   method: 'GET',
-  qs:{
+  qs: {
     key: 'value'
   },
 }
