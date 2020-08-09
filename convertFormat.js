@@ -1,4 +1,4 @@
-function convertFormatForAnalisys(posts) {
+function convertFormatForAnalysis(posts) {
   return posts
     .map(post => post.contents
       .map(content => ({
@@ -26,6 +26,6 @@ function convertFormatForUI(data) {
 }
 
 module.exports = {
-  convertFormatForAnalisys,
+  convertFormatForAnalysis,
   convertFormatForUI
 }

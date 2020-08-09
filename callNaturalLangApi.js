@@ -28,12 +28,12 @@ function callNaturalLangApi(contents) {
         resolve(contents)
       }
       if (response.statusCode === 200) {
-        const data = body.documents.reduce((acc, document) => {
+        const data = body.documents.map(document => {
           const [postId, contentId] = document.id.split(DELIMITER)
           const content = contents.find(content => content.postId === postId && content.contentId === contentId)
           content.sentiment = document.sentiment
-          return [...acc, content]
-        }, [])
+          return content
+        })
         resolve(data)
         return
       }

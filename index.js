@@ -9,7 +9,7 @@ const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 const process_sentimentAnalysis = require('./process_sentimentAnalysis')
-const {convertFormatForAnalisys, convertFormatForUI} = require('./convertFormat')
+const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
@@ -18,7 +18,7 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('/posts', (req, res) => {
   getData() // json 파일 가져옴
-    .then(convertFormatForAnalisys)
+    .then(convertFormatForAnalysis)
     .then(contents => new Promise((resolve, reject) => {
       Promise.all(contents.map(callTranslationApi)).then(resolve)
     }))
