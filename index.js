@@ -4,18 +4,19 @@ dotenv.config()
 
 const express = require('express')
 const path = require('path')
+const router = require('./fileUpload')
 
 const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
-const process_sentimentAnalysis = require('./process_sentimentAnalysis')
+// const process_sentimentAnalysis = require('./process_sentimentAnalysis')
 const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
 
 app.use('/', express.static(path.join(__dirname, 'public')))
-
+app.use(router);
 app.get('/posts', (req, res) => {
   getData() // json 파일 가져옴
     .then(convertFormatForAnalysis)

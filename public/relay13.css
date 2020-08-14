@@ -111,6 +111,7 @@ strong {
     border-radius: 10px;
     background-color: #fa7d09;
     color: #fff;
+    cursor: pointer;
 }
 
 .form-button-submit {
@@ -121,6 +122,7 @@ strong {
     border-radius: 10px;
     background-color: #ff4301;
     color: #fff;
+    cursor: pointer;
 }
 
 .posts {
@@ -172,4 +174,13 @@ strong {
     margin: 40px auto 0;
     padding: 20px 0;
     font-size: 24px;
+}
+
+.objectTag{
+    border: 2px dashed slateblue;
+    margin: 2px;
+    width: 80px;
+    height: 40px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
