@@ -9,7 +9,7 @@ const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 const process_sentimentAnalysis = require('./process_sentimentAnalysis')
-const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
+const {convertFormatForUI} = require('./convertFormat')
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
@@ -18,17 +18,9 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('/posts', (req, res) => {
   getData() // json 파일 가져옴
-    .then(convertFormatForAnalysis)
-    .then(contents => new Promise((resolve, reject) => {
+    .then(contents => new Promise((resolve) => {
       Promise.all(contents.map(callTranslationApi)).then(resolve)
     }))
-    /**
-     * api 호출 함수가 두 종류(callNaturalLangApi, process_sentimentAnalysis)가 있는데
-     * 하나를 선택하여 사용하시면 됩니다.
-     */
-    .then(callNaturalLangApi)
-    // .then(process_sentimentAnalysis) //출력 // data => res.json(data)
-    .then(convertFormatForUI)
     .then(posts => res.json(posts))
     .catch(error => {
       console.log(error)
