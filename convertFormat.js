@@ -10,6 +10,7 @@ function convertFormatForAnalysis(posts) {
 }
 
 function convertFormatForUI(data) {
+    console.log(data);
   return data
     .sort((a, b) => +a.postId - +b.postId || +a.contentId - +b.contentId)
     .reduce((acc, cur) => {

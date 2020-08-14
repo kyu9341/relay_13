@@ -1,72 +1,14 @@
 [
     {
         "postId": "1",
-        "contents": [
-            {
-                "postId": "1",
-                "contentId": "0",
-                "text": "즐거운 하루입니다.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "1",
-                "contentId": "1",
-                "text": "안녕하세요.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "1",
-                "contentId": "2",
-                "text": "첫번째 글을 쓰게 되었네요.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "1",
-                "contentId": "3",
-                "text": "커다란 영광입니다.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "1",
-                "contentId": "4",
-                "text": "잘 부탁드립니다.",
-                "sentiment": "positive"
-            }
-        ]
+        "sentiment": "neutral",
+        "contents": "즐거운 하루입니다. 안녕하세요. 첫번째 글을 쓰게 되었네요. 커다란 영광입니다. 잘 부탁드립니다.",
+        "ascii" : null
     },
     {
         "postId": "2",
-        "contents": [
-            {
-                "postId": "2",
-                "contentId": "0",
-                "text": "이 기능 별로입니다.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "2",
-                "contentId": "1",
-                "text": "제가 생각했던 것과는 많이 달라서 실망이네요.",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "2",
-                "contentId": "2",
-                "text": "다른 분들은 좋으신가요?",
-                "sentiment": "neutral"
-            },
-            {
-                "postId": "2",
-                "contentId": "3",
-                "text": "저는 이 기능을 끄고 사용할 것 같습니다.",
-                "sentiment": "positive"
-            },
-            {
-                "postId": "2",
-                "contentId": "4",
-                "text": "생각보다 별로네요.",
-                "sentiment": "neutral"
-            }
-        ]
+        "sentiment": "neutral",
+        "contents": "이 기능 별로입니다. 제가 생각했던 것과는 많이 달라서 실망이네요. 다른 분들은 좋으신가요? 저는 이 기능을 끄고 사용할 것 같습니다. 생각보다 별로네요.",
+        "ascii" : null
     }
 ]
