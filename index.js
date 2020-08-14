@@ -4,7 +4,7 @@ dotenv.config()
 const express = require('express')
 const path = require('path')
 const router = require('./fileUpload')
-
+const sequelize = require('./model/database')
 const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
@@ -48,29 +48,6 @@ app.get('/posts', (req, res) => {
 //   "ascii" : null
 // },
 
-const sequelize = new Sequelize({
-  dialect:'sqlite',
-  storage:'./database.splite'
-});
-const Posts = sequelize.define('Posts', {
-  postId: {
-    type:DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement:true
-  },
-  sentiment:{
-    type:DataTypes.TEXT
-  },
-  title:{
-    type:DataTypes.TEXT
-  },
-  contents:{
-    type:DataTypes.TEXT
-  },
-  ascii:{
-    type:DataTypes.TEXT
-  }
-})
 sequelize.sync().then(() => {
 
 })
