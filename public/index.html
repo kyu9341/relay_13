@@ -18,6 +18,7 @@
         <div class="form-area">
             <h2 class="form-title">글작성</h2>
             <form action="/posts" method="post">
+
                 <div class="form-group">
                     <label for="content-title" class="form-item-title">제목</label>
                     <input type="text" name="title" id="content-title" class="form-content-input">
@@ -27,12 +28,15 @@
                     <label for="content-body" class="form-item-title">내용</label>
                     <textarea name="contents" id="content-body" class="form-content-body"></textarea>
                 </div>
-
-                <div class="form-group button-group">
-                    <button type="reset" class="form-button-reset">리셋</button>
-                    <button type="submit" class="form-button-submit">전송</button>
-                </div>
             </form>
+            <div id = 'insertedImage'></div>
+            <div id = 'insertedButton'></div>
+            
+            <div class="form-group button-group">
+                <button type="reset" form="formTag" class="form-button-reset">리셋</button>
+                <button type="submit" form="formTag" class="form-button-submit">전송</button>
+            </div>
+            <input type = 'file' onChange = 'handleFile(event)'>test</input>
         </div>
 
         <div class="posts-wrap">
@@ -65,5 +69,22 @@
     </footer>
 </div>
 <script src="index.js"></script>
+<script src="objectDetection.js"></script>
+<script>
+    const imageResizing = (event) => {
+        console.log(event.target.dataset.detection_boxes)
+    }
+    const handleFile = (event) => {
+        const files = new FormData();
+        for(const file of Object.values(event.target.files))
+            files.append('files', file)
+        
+        fetch('/saveImage',{
+            method:'POST',
+            body: files
+        })
+        .then(res => res.json())
+    }
+</script>
 </body>
 </html>

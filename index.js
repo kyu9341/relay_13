@@ -4,16 +4,22 @@ dotenv.config()
 
 const express = require('express')
 const path = require('path')
+
+const router = require('./fileUpload')
 const bodyParser = require('body-parser')
+const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
+// const process_sentimentAnalysis = require('./process_sentimentAnalysis')
+const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
+
 
 const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extends: true }))
 app.set('port', process.env.PORT || 3000)
 app.use('/', express.static(path.join(__dirname, 'public')))
-
+app.use(router);
 app.post('/posts', async (req, res) => {
   const post = req.body;
   const translatedPost = await callTranslationApi(post)
@@ -34,6 +40,8 @@ processedPost {
 }
 */
 
+
+app.use(router);
 app.get('/posts', (req, res) => {
 
   // TODO DB에서 select 한 데이터를 출력해주는 코드
