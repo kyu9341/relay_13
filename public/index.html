@@ -82,15 +82,17 @@
                 value = '${event.target.dataset.detection_boxes}'>
          </input>
          <input type="hidden" 
-                id='objectDetection' 
+                id='file_path' 
                 name=objectDetection 
                 value = '${event.target.dataset.file_path}'>
          </input>
         `
 
         console.log(event.target.dataset.file_path)
-        if(hiddenTag)
+        if(hiddenTag){
             hiddenTag.value = event.target.dataset.detection_boxes;
+            document.getElementById('file_path').value = event.target.dataset.file_path
+        }
         else
             form.insertAdjacentHTML('beforeend', insertHtml);
         
