@@ -1,7 +1,6 @@
 const dotenv = require('dotenv')
 // .env 파일로 설정한 환경변수를 적용합니다(sample.env 파일 내용 확인 바람).
 dotenv.config()
-
 const express = require('express')
 const path = require('path')
 const router = require('./fileUpload')
@@ -10,7 +9,8 @@ const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 // const process_sentimentAnalysis = require('./process_sentimentAnalysis')
-const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
+const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat');
+const { DataTypes, Sequelize } = require('sequelize');
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
@@ -39,6 +39,40 @@ app.get('/posts', (req, res) => {
       }
       res.json(substitute)
     })
+})
+// {
+//   "postId": "1",
+//   "sentiment": "neutral",
+//   "title" : "즐거운 하루입니다.",
+//   "contents": "안녕하세요. 첫번째 글을 쓰게 되었네요. 커다란 영광입니다. 잘 부탁드립니다.",
+//   "ascii" : null
+// },
+
+const sequelize = new Sequelize({
+  dialect:'sqlite',
+  storage:'./database.splite'
+});
+const Posts = sequelize.define('Posts', {
+  postId: {
+    type:DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  sentiment:{
+    type:DataTypes.TEXT
+  },
+  title:{
+    type:DataTypes.TEXT
+  },
+  contents:{
+    type:DataTypes.TEXT
+  },
+  ascii:{
+    type:DataTypes.TEXT
+  }
+})
+sequelize.sync().then(() => {
+
 })
 
 app.listen(app.get('port'), () => {
