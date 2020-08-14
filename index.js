@@ -10,7 +10,6 @@ const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 // const process_sentimentAnalysis = require('./process_sentimentAnalysis')
 const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat');
-const { DataTypes, Sequelize } = require('sequelize');
 
 const app = express()
 app.set('port', process.env.PORT || 3000)
@@ -39,6 +38,11 @@ app.get('/posts', (req, res) => {
       }
       res.json(substitute)
     })
+})
+app.post('/addPost', (req, res) => {
+  console.log(req.body)
+  console.log(req)
+  res.json('hello')
 })
 // {
 //   "postId": "1",
