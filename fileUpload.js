@@ -1,12 +1,16 @@
 const multer = require('multer')
 const {v4} = require('uuid')
 const express = require('express')
+const callObjectDetectionApi = require('./callObjectDetectionApi')
+
 const router  = express.Router();
+const directory = 'public/uploads/'
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        cb(null, 'public/uploads/')
+        cb(null, directory)
     },
-    filename:(req, file, cb) => {
+    filename: (req, file, cb) => {
         const fileType = file.originalname.split('.')
         cb(null, `${v4()}.${fileType[fileType.length-1]}`)
     }
@@ -14,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage, limits:{fileSize:2000000 }})
 router.post('/saveImage', upload.single('files'), (req, res) => {
-    console.log(req.file)
-    res.json(req['file']['destination'] + req['file']['filename'] )
+    callObjectDetectionApi(req['file']['destination'] + req['file']['filename'])
+    .then(apires => res.json(apires.data))
 })
 module.exports = router
