@@ -17,15 +17,16 @@
     <main class="web-main">
         <div class="form-area">
             <h2 class="form-title">글작성</h2>
-            <form action="/addPost" method="post" id="formTag">
+            <form action="/posts" method="post" id="formTag">
+
                 <div class="form-group">
                     <label for="content-title" class="form-item-title">제목</label>
-                    <input type="text" name="content-title" id="content-title" class="form-content-input">
+                    <input type="text" name="title" id="content-title" class="form-content-input">
                 </div>
 
                 <div class="form-group">
                     <label for="content-body" class="form-item-title">내용</label>
-                    <textarea name="content-body" id="content-body" class="form-content-body"></textarea>
+                    <textarea name="contents" id="content-body" class="form-content-body"></textarea>
                 </div>
             </form>
             <div id = 'insertedImage'></div>
@@ -35,7 +36,7 @@
                 <button type="reset" form="formTag" class="form-button-reset">리셋</button>
                 <button type="submit" form="formTag" class="form-button-submit">전송</button>
             </div>
-            <input type = 'file' onChange = 'handleFile(event)'>test</input>
+            <input type = 'file' onChange = 'handleFile(event)'></input>
         </div>
 
         <div class="posts-wrap">
@@ -69,9 +70,31 @@
 </div>
 <script src="index.js"></script>
 <script src="objectDetection.js"></script>
+
 <script>
-    const imageResizing = (event) => {
-        console.log(event.target.dataset.detection_boxes)
+    const imageResizing = (event) => {   
+        const form = document.getElementById('formTag');
+        const hiddenTag = document.getElementById('objectDetection');
+        const insertHtml=`
+         <input type="hidden" 
+                id='objectDetection' 
+                name=objectDetection 
+                value = '${event.target.dataset.detection_boxes}'>
+         </input>
+         <input type="hidden" 
+                id='objectDetection' 
+                name=objectDetection 
+                value = '${event.target.dataset.file_path}'>
+         </input>
+        `
+
+        console.log(event.target.dataset.file_path)
+        if(hiddenTag)
+            hiddenTag.value = event.target.dataset.detection_boxes;
+        else
+            form.insertAdjacentHTML('beforeend', insertHtml);
+        
+        // console.log(object)
     }
     const handleFile = (event) => {
         const files = new FormData();
@@ -83,6 +106,9 @@
             body: files
         })
         .then(res => res.json())
+        .then(res => {
+            objectDetection(res)
+        })
     }
 </script>
 </body>

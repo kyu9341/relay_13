@@ -19,3 +19,4 @@ const Posts = sequelize.define('Posts', {
       type:DataTypes.TEXT
     }
 })
+module.exports = Posts

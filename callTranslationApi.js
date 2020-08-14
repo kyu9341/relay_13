@@ -14,21 +14,26 @@ const options = {
   }
 }
 
-function callTranslationApi(content) {
+function callTranslationApi(post) {
+  console.log(post);
   return new Promise((resolve, reject) => {
     const _options = JSON.parse(JSON.stringify(options))
-    _options.form.text = content.text
+    _options.form.text = post.contents
     request(_options, (error, response, body) => {
       const data = JSON.parse(body)
       if (!!error || !!data['errorMessage']) {
-        resolve(content)
+        console.log('eeee' , post)
+        resolve(post)
       }
       if (response.statusCode === 200) {
-        content.translatedText = data.message.result.translatedText
-        resolve(content)
+        post.translatedText = data.message.result.translatedText
+        console.log(post.translatedText)
+        resolve(post)
       }
     })
   })
 }
 
+
 module.exports = callTranslationApi
+

@@ -19,6 +19,6 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage, limits:{fileSize:2000000 }})
 router.post('/saveImage', upload.single('files'), (req, res) => {
     callObjectDetectionApi(req['file']['destination'] + req['file']['filename'])
-    .then(apires => res.json(apires.data))
+    .then(apires => res.json({'result':apires.data, 'filePath':req['file']['destination'] + req['file']['filename']}))
 })
 module.exports = router

@@ -14,32 +14,35 @@ const options = {
 
 const DELIMITER = '-'
 
-function callNaturalLangApi(contents) {
+function callNaturalLangApi(post) {
+  console.log('na', post);
   return new Promise((resolve, reject) => {
-    const documents = contents.map(content => ({
-      id: `${content.postId}${DELIMITER}${content.contentId}`,
-      language: !!content.translatedText ? 'en' : 'ko',
-      text: content.translatedText || content.text
-    }))
+    let documents = {
+      id: 1,
+      language: !!post.translatedText ? 'en' : 'ko',
+      text: post.translatedText || post.contents
+    }
+
+    console.log('docu', documents);
     const _options = JSON.parse(JSON.stringify(options))
-    _options.body.documents = documents
+    _options.body.documents = [ documents ]
     request(_options, (error, response, body) => {
       if (!!error) {
-        resolve(contents)
+        console.log('==last fail data==', body.documents.sentiment)
+        resolve(post)
       }
       if (response.statusCode === 200) {
-        const data = body.documents.map(document => {
-          const [postId, contentId] = document.id.split(DELIMITER)
-          const content = contents.find(content => content.postId === postId && content.contentId === contentId)
-          content.sentiment = document.sentiment
-          return content
-        })
-        resolve(data)
+        post.sentiment = body.documents[0].sentiment;
+        console.log('===============data', post)
+        resolve(post)
         return
       }
-      resolve(contents)
+      console.log('na2', body);
+
+      resolve(post)
     })
   })
 }
 
 module.exports = callNaturalLangApi
+
