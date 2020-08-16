@@ -16,7 +16,7 @@ async function imageToAscii(path, position) {
     let tw = x2 - x1
     let th = y2 - y1
 
-    image.crop(y1, x1, tw, th, err => {if(err) throw err}).write(path)
+    image.crop(y1, x1, th, tw, err => {if(err) throw err}).write(path)
 
     let options = {
         fit: 'width',
