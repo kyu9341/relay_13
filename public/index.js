@@ -8,8 +8,7 @@ fetch(POSTS_API)
     .then(posts => {
         posts.reverse();
         postsElement.innerHTML = `${
-            posts
-                .map(post => `
+          posts.map(post => `
           <li id="${post.postId}" class="post">
             <div id="${post.postId}-0" class="post-head">
               제목:
