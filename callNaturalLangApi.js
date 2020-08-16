@@ -1,44 +1,35 @@
-const request = require('request')
+const axios = require('axios')
+const dotenv = require('dotenv').config()
 
-const options = {
-  url: `${process.env.ENDPOINT}/text/analytics/v3.0/sentiment`,
-  method: 'POST',
-  headers: {
-    'Ocp-Apim-Subscription-Key': process.env.SUBSCRIPTION_KEY
-  },
-  body: {
-    documents: []
-  },
-  json: true
+// axios.defaults.timeout = 4000
+const URL = process.env.ENDPOINT + 'text/analytics/v3.0/sentiment'
+
+headers = {
+    'Ocp-Apim-Subscription-Key': process.env.SUBSCRIPTION_KEY,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
 }
 
-const DELIMITER = '-'
+function callNaturalLangApi(post) {
+  const data = {
+    documents: [{
+      "id": "1",
+      "language": "ko",
+      "text" : post.title + ' ' + post.contents
+    }]
+  }
 
-function callNaturalLangApi(contents) {
-  return new Promise((resolve, reject) => {
-    const documents = contents.map(content => ({
-      id: `${content.postId}${DELIMITER}${content.contentId}`,
-      language: !!content.translatedText ? 'en' : 'ko',
-      text: content.translatedText || content.text
-    }))
-    const _options = JSON.parse(JSON.stringify(options))
-    _options.body.documents = documents
-    request(_options, (error, response, body) => {
-      if (!!error) {
-        resolve(contents)
-      }
-      if (response.statusCode === 200) {
-        const data = body.documents.map(document => {
-          const [postId, contentId] = document.id.split(DELIMITER)
-          const content = contents.find(content => content.postId === postId && content.contentId === contentId)
-          content.sentiment = document.sentiment
-          return content
-        })
-        resolve(data)
-        return
-      }
-      resolve(contents)
-    })
+  axios({
+    method  : 'POST',
+    url     : URL,
+    headers : headers,
+    data    : data
+  }).then((res) => {
+    post['sentiment'] = res.data.documents[0].sentiment
+    return post
+  }).catch((error) => {
+    console.log('status code    = ', error.response.status)
+    console.log('status message = ', error.response.statusText)
   })
 }
 
