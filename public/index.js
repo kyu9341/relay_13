@@ -6,6 +6,7 @@ const postsElement = document.getElementById(POSTS_ID)
 fetch(POSTS_API)
     .then(response => response.json())
     .then(posts => {
+        posts.reverse();
         postsElement.innerHTML = `${
             posts
                 .map(post => `
@@ -23,15 +24,17 @@ fetch(POSTS_API)
               </div>
             </div>
           </li>
+          ${post.ascii ? `
           <li id="${post.postId}" class="post">
             <div class="post-image">
               <div class="post-image-title">아스키 이미지:</div>
                 <div>
-<!--                TODO 아스키 이미지 출력란 입니다.-->
                   ${post.ascii}
                 </div>
             </div>
           </li>
+          `:''  
+          }
         `)
                 .join('')
         }`
