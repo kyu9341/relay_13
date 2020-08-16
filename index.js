@@ -10,8 +10,9 @@ const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
 // const process_sentimentAnalysis = require('./process_sentimentAnalysis')
-
+const {imageToAscii} = require('./imageToAscii')
 const dotenv = require('dotenv').config()
+
 
 const app = express()
 
@@ -26,15 +27,11 @@ app.post('/posts', async (req, res) => {
     title: req.body.title,
     contents : req.body.contents
   }
-  // ERROR : object detection이 이상해욜~~ undefined로 옵니다!
-  // const [boxPoints, filePath]= objectDetection
+  const {objectDetection} = req.body;
   const processedPost = await callTranslationApi(post).then(callNaturalLangApi)
-  // const processedPost = await callNaturalLangApi(translatedPost)
-  // console.log(boxPoints, filePath)
-  await Posts.create(post)
-  // objectDetection 객체로 좌표 접근 가능.
-  // TODO INSERT post, 추가적으로 ascii 텍스트 처리해서 넣어주어야 합니다.
-  // console.log('processedPost', processedPost);
+  const [boxPoints, filePath]= objectDetection
+  const ascii = await imageToAscii(filePath, boxPoints)
+  await Posts.create({...processedPost, ascii}
 
   res.redirect('/');
 });
