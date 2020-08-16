@@ -1,6 +1,7 @@
-const fs = require('fs');
-const axios = require('axios');
-const FormData =  require('form-data');
+const fs = require('fs')
+const axios = require('axios')
+const FormData =  require('form-data')
+const dotenv = require('dotenv').config()
 
 const url =  "https://naveropenapi.apigw.ntruss.com/vision-obj/v1/detect";
 
@@ -14,8 +15,8 @@ function callObjectDetectionApi(path) {
   })
   let options = {
     headers: {
-      'X-NCP-APIGW-API-KEY-ID': 'o4tp8j5ggp',
-      'X-NCP-APIGW-API-KEY': 'hb5knkp6JKPJNtnGLg6hLv88vmIV1Cs2ENqEqoXI',
+      'X-NCP-APIGW-API-KEY-ID': process.env.NAVER_CLOUD_API_ID,
+      'X-NCP-APIGW-API-KEY': process.env.NAVER_CLOUD_API_KEY,
       ...formData.getHeaders()
     }
   }
