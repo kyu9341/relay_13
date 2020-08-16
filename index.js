@@ -29,9 +29,13 @@ app.post('/posts', async (req, res) => {
   }
   const {objectDetection} = req.body;
   await callTranslationApi(post).then(callNaturalLangApi)
-  const [boxPoints, filePath]= objectDetection
-  const ascii = await imageToAscii(filePath, boxPoints)
-  await Posts.create({ ...post, ascii})
+  if(objectDetection){
+    const [boxPoints, filePath]= objectDetection
+    const ascii = await imageToAscii(filePath, boxPoints)
+    await Posts.create({ ...post, ascii})
+  }else
+    await Posts.create({ ...post})
+
   res.redirect('/');
 });
 
