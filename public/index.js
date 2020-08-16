@@ -28,7 +28,7 @@ fetch(POSTS_API)
               <div class="post-image-title">아스키 이미지:</div>
                 <div>
 <!--                TODO 아스키 이미지 출력란 입니다.-->
-<!--                ${post.ascii}-->
+                  ${post.ascii}
                 </div>
             </div>
           </li>

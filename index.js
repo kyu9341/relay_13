@@ -12,7 +12,7 @@ const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
 // const process_sentimentAnalysis = require('./process_sentimentAnalysis')
 const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat');
-
+const {imageToAscii} = require('./imageToAscii')
 
 const app = express()
 app.use(bodyParser.json())
@@ -26,7 +26,8 @@ app.post('/posts', async (req, res) => {
   const translatedPost = await callTranslationApi(req.body)
   const processedPost = await callNaturalLangApi(translatedPost);
   console.log(boxPoints, filePath)
-  await Posts.create({title, contents})
+  const ascii = await imageToAscii(filePath, boxPoints)
+  await Posts.create({title, contents, ascii})
   // objectDetection 객체로 좌표 접근 가능.
   // TODO INSERT post, 추가적으로 ascii 텍스트 처리해서 넣어주어야 합니다.
   // console.log('processedPost', processedPost);
