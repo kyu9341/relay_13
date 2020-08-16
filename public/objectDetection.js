@@ -12,15 +12,15 @@ const objectDetection = ({result, destination, fileName}) => {
             ctx.drawImage(img, 0, 0, size, size)
             result['predictions'][0]['detection_boxes'].forEach((points,index) => {
                 const [x1,y1,x2,y2] = points;
-                ctx.strokeRect(x1*size,y1*size,(x2-x1)*size,(y2-y1)*size)
+                ctx.strokeRect(x1*size, y1*size, (x2-x1) * size, (y2-y1) * size);
                 ctx.font = `${fontSize}px Arial`;
                 ctx.fillStyle = "white";
                 ctx.strokeStyle = 'black';
                 ctx.fill();
                 ctx.stroke();
-                ctx.strokeText(result['predictions'][0]['detection_names'][index],x1 * size, y1 * (size-fontSize))
-                ctx.fillText(  result['predictions'][0]['detection_names'][index],x1 * size, y1 * (size-fontSize));
-                ctx.lineWidth = 3
+                ctx.strokeText(result['predictions'][0]['detection_names'][index], (x1 * size) + fontSize, (y1 * size) + fontSize);
+                ctx.fillText(  result['predictions'][0]['detection_names'][index], (x1 * size) + fontSize, (y1 * size) + fontSize);
+                ctx.lineWidth = 3;
             });
         }
         img.src = `uploads/${fileName}`;
