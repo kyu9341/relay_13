@@ -28,15 +28,10 @@ app.post('/posts', async (req, res) => {
     contents : req.body.contents
   }
   const {objectDetection} = req.body;
-  const processedPost = await callTranslationApi(post).then(callNaturalLangApi)
+  await callTranslationApi(post).then(callNaturalLangApi)
   const [boxPoints, filePath]= objectDetection
-  console.log(boxPoints, filePath)
   const ascii = await imageToAscii(filePath, boxPoints)
-  await Posts.create({ ...processedPost, ascii})
-  // objectDetection 객체로 좌표 접근 가능.
-  // TODO INSERT post, 추가적으로 ascii 텍스트 처리해서 넣어주어야 합니다.
-  // console.log('processedPost', processedPost);
-
+  await Posts.create({ ...post, ascii})
   res.redirect('/');
 });
 
