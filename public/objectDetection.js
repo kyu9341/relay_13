@@ -1,4 +1,5 @@
 const size = 500;
+const fontSize = 20;
 const objectDetection = ({result, destination, fileName}) => {
     console.log('object')
     if (result['predictions'].length){
@@ -12,13 +13,13 @@ const objectDetection = ({result, destination, fileName}) => {
             result['predictions'][0]['detection_boxes'].forEach((points,index) => {
                 const [x1,y1,x2,y2] = points;
                 ctx.strokeRect(x1*size,y1*size,(x2-x1)*size,(y2-y1)*size)
-                ctx.font = "20px Arial";
+                ctx.font = `${fontSize}px Arial`;
                 ctx.fillStyle = "white";
                 ctx.strokeStyle = 'black';
                 ctx.fill();
                 ctx.stroke();
-                ctx.strokeText(result['predictions'][0]['detection_names'][index],x1 * size, y1 * 480)
-                ctx.fillText(  result['predictions'][0]['detection_names'][index],x1 * size, y1 * 480);
+                ctx.strokeText(result['predictions'][0]['detection_names'][index],x1 * size, y1 * (size-fontSize))
+                ctx.fillText(  result['predictions'][0]['detection_names'][index],x1 * size, y1 * (size-fontSize));
                 ctx.lineWidth = 3
             });
         }
