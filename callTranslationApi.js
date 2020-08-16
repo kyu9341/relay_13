@@ -1,4 +1,5 @@
 const request = require('request')
+const dotenv = require('dotenv').config()
 
 const options = {
   url: 'https://openapi.naver.com/v1/papago/n2mt',
@@ -15,19 +16,16 @@ const options = {
 }
 
 function callTranslationApi(post) {
-  console.log(post);
   return new Promise((resolve, reject) => {
     const _options = JSON.parse(JSON.stringify(options))
     _options.form.text = post.contents
     request(_options, (error, response, body) => {
       const data = JSON.parse(body)
       if (!!error || !!data['errorMessage']) {
-        console.log('eeee' , post)
-        resolve(post)
+        reject(new Error("번역에 실패하였습니다."))
       }
       if (response.statusCode === 200) {
         post.translatedText = data.message.result.translatedText
-        console.log(post.translatedText)
         resolve(post)
       }
     })

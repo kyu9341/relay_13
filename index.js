@@ -1,32 +1,37 @@
-const dotenv = require('dotenv')
-// .env 파일로 설정한 환경변수를 적용합니다(.env 파일 내용 확인 바람).
-dotenv.config()
 const express = require('express')
 const path = require('path')
+const bodyParser = require('body-parser')
+
+const Posts = require('./model/post')
 const router = require('./fileUpload')
 const sequelize = require('./model/database')
-const bodyParser = require('body-parser')
-const Posts = require('./model/post')
 const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
+const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat')
 // const process_sentimentAnalysis = require('./process_sentimentAnalysis')
-const {convertFormatForAnalysis, convertFormatForUI} = require('./convertFormat');
 
+const dotenv = require('dotenv').config()
 
 const app = express()
+
 app.use(bodyParser.json())
 app.use(bodyParser.json()).use(bodyParser.urlencoded({ extended: true }))
 app.set('port', process.env.PORT || 3000)
 app.use('/', express.static(path.join(__dirname, 'public')))
-app.use(router);
+app.use(router)
+
 app.post('/posts', async (req, res) => {
-  const {title, contents, objectDetection} = req.body;
-  const [boxPoints, filePath]= objectDetection
-  // const translatedPost = await callTranslationApi(post)
-  // const processedPost = await callNaturalLangApi(translatedPost);
-  console.log(boxPoints, filePath)
-  await Posts.create({title, contents})
+  const post = {
+    title: req.body.title,
+    contents : req.body.contents
+  }
+  // ERROR : object detection이 이상해욜~~ undefined로 옵니다!
+  // const [boxPoints, filePath]= objectDetection
+  const processedPost = await callTranslationApi(post).then(callNaturalLangApi)
+  // const processedPost = await callNaturalLangApi(translatedPost)
+  // console.log(boxPoints, filePath)
+  await Posts.create(post)
   // objectDetection 객체로 좌표 접근 가능.
   // TODO INSERT post, 추가적으로 ascii 텍스트 처리해서 넣어주어야 합니다.
   // console.log('processedPost', processedPost);
