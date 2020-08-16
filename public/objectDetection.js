@@ -1,8 +1,8 @@
-const objectDetection = ({result, filePath}) => {
+const objectDetection = ({result, destination, fileName}) => {
     if (result['predictions'].length){
         const postsElement = document.getElementById('insertedButton')
+        document.getElementById('insertedImage').innerHTML = `<img src="uploads/${fileName}" width="500px">`
         postsElement.innerHTML = `
-        
         ${
             result['predictions'][0]['detection_names'].map((detectionObject, index) => {
                 result['predictions'][0]['detection_boxes'][index]
@@ -10,7 +10,7 @@ const objectDetection = ({result, filePath}) => {
                 <button class   = 'objectTag'
                         onclick = "imageResizing(event)" 
                         name    = "detection_boxes"
-                        data-file_path=${filePath}
+                        data-file_path=${destination+fileName}
                         data-detection_boxes=${result['predictions'][0]['detection_boxes'][index]}>
                         ${detectionObject}
                 </button>

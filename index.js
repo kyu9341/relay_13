@@ -23,8 +23,8 @@ app.use(router);
 app.post('/posts', async (req, res) => {
   const {title, contents, objectDetection} = req.body;
   const [boxPoints, filePath]= objectDetection
-  // const translatedPost = await callTranslationApi(post)
-  // const processedPost = await callNaturalLangApi(translatedPost);
+  const translatedPost = await callTranslationApi(req.body)
+  const processedPost = await callNaturalLangApi(translatedPost);
   console.log(boxPoints, filePath)
   await Posts.create({title, contents})
   // objectDetection 객체로 좌표 접근 가능.
