@@ -1,7 +1,7 @@
 const axios = require('axios')
 const dotenv = require('dotenv').config()
 
-axios.defaults.timeout = 2000
+// axios.defaults.timeout = 4000
 const URL = process.env.ENDPOINT + 'text/analytics/v3.0/sentiment'
 
 headers = {
