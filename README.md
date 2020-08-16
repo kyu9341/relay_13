@@ -30,7 +30,7 @@
   - J175 장우영
   - J214 한상욱
 
-## [Week 2. 비전, 영상 처리](md/0814_week3.md)
+## [Week 3. 비전, 영상 처리](md/0814_week3.md)
 - contributors
   - J024 김다인
   - J073 박기호
