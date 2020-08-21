@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const Posts = require('./model/post');
 const router = require('./fileUpload');
@@ -15,6 +16,7 @@ const dotenv = require('dotenv').config();
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.json()).use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 5000);
@@ -22,6 +24,7 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(router);
 const getMbti = require('./pythonRequester');
 app.post('/mbti', async (req, res, next) => {
+  console.log(req.body);
   const mbti = (await getMbti(req.body.post))[0];
   res.json({ data: mbti });
 });
