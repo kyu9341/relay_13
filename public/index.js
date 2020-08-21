@@ -3,7 +3,6 @@ const POSTS_API = 'http://localhost:3000/posts'
 // const POSTS_API = 'http://localhost:3000/data.json'
 
 const postsElement = document.getElementById(POSTS_ID)
-
 fetch(POSTS_API)
   .then(response => response.json())
   .then(posts => {
@@ -24,7 +23,9 @@ fetch(POSTS_API)
               </div>
             </div>
           </li>
+          `:''  
+          }
         `)
-        .join('')
-    }`
-  })
+                .join('')
+        }`
+    })

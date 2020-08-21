@@ -1,20 +1,70 @@
-const dotenv = require('dotenv')
-// .env 파일로 설정한 환경변수를 적용합니다(sample.env 파일 내용 확인 바람).
-dotenv.config()
-
 const express = require('express')
 const path = require('path')
+const bodyParser = require('body-parser')
 
+const Posts = require('./model/post')
+const router = require('./fileUpload')
+const sequelize = require('./model/database')
 const getData = require('./getData')
 const callTranslationApi = require('./callTranslationApi')
 const callNaturalLangApi = require('./callNaturalLangApi')
+
 const process_sentimentAnalysis = require('./process_sentimentAnalysis')
 const {convertFormatForUI} = require('./convertFormat')
 
-const app = express()
-app.set('port', process.env.PORT || 3000)
 
+const app = express()
+
+app.use(bodyParser.json())
+app.use(bodyParser.json()).use(bodyParser.urlencoded({ extended: true }))
+app.set('port', process.env.PORT || 3000)
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use(router)
+
+app.post('/posts', async (req, res) => {
+  const post = {
+    title: req.body.title,
+    contents : req.body.contents
+  }
+  const {objectDetection} = req.body;
+  await callTranslationApi(post).then(callNaturalLangApi)
+  if(objectDetection){
+    const [boxPoints, filePath]= objectDetection
+    const ascii = await imageToAscii(filePath, boxPoints)
+    await Posts.create({ ...post, ascii})
+  }else
+    await Posts.create({ ...post})
+
+  res.redirect('/');
+});
+
+/*
+ex)
+processedPost {
+  title: '하하하',
+  contents: '하하하하 안녕하세요~',
+  translatedText: 'Hahahaha Hello~',
+  sentiment: 'neutral' // 감정 분석 결과 neutral, positive, negative
+}
+*/
+
+
+app.use(router);
+app.get('/posts', async(req, res) => {
+  const result = await Posts.findAll()
+  // TODO DB에서 select 한 데이터를 출력해주는 코드
+  res.json(result);
+})
+// {
+//   "postId": "1",
+//   "sentiment": "neutral",
+//   "title" : "즐거운 하루입니다.",
+//   "contents": "안녕하세요. 첫번째 글을 쓰게 되었네요. 커다란 영광입니다. 잘 부탁드립니다.",
+//   "ascii" : null
+// },
+
+sequelize.sync().then(() => {
+
 
 app.get('/posts', (req, res) => {
   getData() // json 파일 가져옴
@@ -30,6 +80,7 @@ app.get('/posts', (req, res) => {
       }
       res.json(substitute)
     })
+
 })
 
 app.listen(app.get('port'), () => {

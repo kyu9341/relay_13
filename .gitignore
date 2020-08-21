@@ -8,9 +8,10 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+public/uploads/*
+!public/uploads/init.txt
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
 # Runtime data
 pids
 *.pid
@@ -73,7 +74,7 @@ web_modules/
 # dotenv environment variables file
 .env
 .env.test
-
+!sample.env
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -124,3 +125,4 @@ dist
 *.iml
 out
 gen
+database.splite
